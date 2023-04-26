@@ -30,7 +30,7 @@ const questions = [
 
 // Prompt user to select an action, and shows result based on that
 async function start() {
-    const {action} = await inquirer.prompt(questions);
+    const action = await inquirer.prompt(questions);
   
     // performs the task based on the user selection
     if (action === 'View all departments') {
@@ -77,7 +77,7 @@ async function start() {
 
   // add a department
 async function addDepartment() {
-    const {name} = await inquirer.prompt({
+    const name = await inquirer.prompt({
       type: 'input',
       message: 'What is the name of the department?',
       name: 'name',
@@ -104,7 +104,7 @@ async function addDepartment() {
         message: 'Which department does the role belong to?',
         name: 'department_id',
         choices: departments.map((department) => ({
-          name: department['Department Name'],
+          name: department['Department name'],
           value: department['Department ID'],
         })),
       },
@@ -151,7 +151,7 @@ async function updateEmployeeRole() {
         message: 'Which employee would you like to update?',
         name: 'employee_id',
         choices: employees.map((employee) => ({
-          name: `${employee['First Name']} ${employee['Last Name']}`,
+          name: `${employee['first name']} ${employee['last name']}`,
           value: employee['Employee ID'],
         })),
       },
@@ -176,14 +176,48 @@ async function viewEmployeesByDepartment() {
       {
         type: 'list',
         message: 'Which department would you like to view?',
-        name: "departmentId",
+        name: 'departmentId',
         choices: departments.map((d) => ({
-          name: d['Department Name'],
+          name: d['Department name'],
           value: d['Department ID'],
         })),
       },
     ]);
     console.table(await queries.viewEmployeesByDepartment(departmentId));
+  }
+
+    // deletes an employee
+    async function deleteEmployee() {
+        const employees = await queries.viewAllEmployees();
+        const employeeId = await inquirer.prompt({
+          type: 'list',
+          message: 'Which employee would you like to delete?',
+          name: 'employeeId',
+          choices: employees.map((employee) => ({
+            name: `${employee['first name']} ${employee['last name']}`,
+            value: employee['Employee ID'],
+          })),
+        });
+      
+        await queries.deleteEmployee(employeeId);
+        console.log(`Employee ${employeeId} has been deleted.`);
+      }
+
+       // deletes a role
+async function deleteRole() {
+    const roles = await queries.viewAllRoles();
+    const roleId  = await inquirer.prompt({
+      type: 'list',
+      message: 'Which role would you like to delete?',
+      name: 'roleId',
+      choices: roles.map((role) => ({
+        name: role['Job Title'],
+        value: role['Role ID'],
+      })),
+    });
+  
+    await queries.deleteRole(roleId);
+    console.log(`Role ${roleId} has been deleted.`);
   }
   
   // delete a dept
@@ -194,7 +228,7 @@ async function viewEmployeesByDepartment() {
       message: 'Which department would you like to delete?',
       name: 'departmentId',
       choices: departments.map((department) => ({
-        name: department['Department Name'],
+        name: department['Department name'],
         value: department['Department ID'],
       })),
     });
@@ -202,3 +236,10 @@ async function viewEmployeesByDepartment() {
     await queries.deleteDepartment(departmentId);
     console.log(`Department ${departmentId} has been deleted.`);
   }
+
+
+  start();
+ 
+  
+
+  
