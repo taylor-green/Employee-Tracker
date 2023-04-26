@@ -119,17 +119,17 @@ async function addEmployee() {
   
     const {first_name, last_name, role_id} = await inquirer.prompt([{
         type: 'input',
-        message: "What is the employee's first name?",
+        message: 'What is the employee's first name?',
         name: 'first_name',
       },
       {
         type: 'input',
-        message: "What is the employee's last name?",
+        message: 'What is the employee's last name?',
         name: 'last_name',
       },
       {
         type: 'list',
-        message: "What is the employee's role?",
+        message: 'What is the employee's role?',
         name: 'role_id',
         choices: roles.map((role) => ({
           name: role['Job Title'],
@@ -140,4 +140,31 @@ async function addEmployee() {
     ]);
     await queries.addEmployee(first_name, last_name, role_id, manager_id);
     console.log(`Employee ${first_name} ${last_name} has been added.`);
+  }
+
+  // Prompt user to update an employee's role
+async function updateEmployeeRole() {
+    const employees = await queries.viewAllEmployees();
+    const roles = await queries.viewAllRoles();
+    const {employee_id, role_id} = await inquirer.prompt([{
+        type: 'list',
+        message: 'Which employee would you like to update?',
+        name: 'employee_id',
+        choices: employees.map((employee) => ({
+          name: `${employee['First Name']} ${employee['Last Name']}`,
+          value: employee['Employee ID'],
+        })),
+      },
+      {
+        type: 'list',
+        message: "What is the employee's new role?",
+        name: 'role_id',
+        choices: roles.map((role) => ({
+          name: role['Job Title'],
+          value: role['Role ID'],
+        })),
+      },
+    ]);
+    await queries.updateEmployeeRole(employee_id, role_id);
+    console.log(`Employee's role has been updated.`);
   }
