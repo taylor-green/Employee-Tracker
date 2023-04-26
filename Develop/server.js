@@ -112,3 +112,32 @@ async function addDepartment() {
     await queries.addRole(title, salary, department_id);
     console.log(`Role ${title} has been added.`);
   }
+
+  // Prompt user to add an employee
+async function addEmployee() {
+    const roles = await queries.viewAllRoles();
+  
+    const {first_name, last_name, role_id} = await inquirer.prompt([{
+        type: 'input',
+        message: "What is the employee's first name?",
+        name: 'first_name',
+      },
+      {
+        type: 'input',
+        message: "What is the employee's last name?",
+        name: 'last_name',
+      },
+      {
+        type: 'list',
+        message: "What is the employee's role?",
+        name: 'role_id',
+        choices: roles.map((role) => ({
+          name: role['Job Title'],
+          value: role['Role ID'],
+        })),
+      },
+      
+    ]);
+    await queries.addEmployee(first_name, last_name, role_id, manager_id);
+    console.log(`Employee ${first_name} ${last_name} has been added.`);
+  }
