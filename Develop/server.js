@@ -2,7 +2,7 @@
 const inquirer = require('inquirer');
 const { start } = require('repl');
 const { connection } = require('./db/connection');
-const Queries = require('./lib/queries');
+const Queries = require('./query');
 const queries = new Queries(connection);
 
 //List of options for user to select from
