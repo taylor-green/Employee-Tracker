@@ -61,8 +61,8 @@ class Queries {
       // Add an employee
   async function addEmployee(first_name, last_name, role_id) {
     const [result] = await this.connection.query(
-      `INSERT INTO employee ${first_name, last_name, role_id} VALUES ('', '', '', '');`,
-      [first_name, last_name, role_id, manager_id]
+      `INSERT INTO employee ${first_name, last_name, role_id} VALUES (' ', ' ', ' ');`,
+      [first_name, last_name, role_id]
     );
     return result;
   }
@@ -70,13 +70,21 @@ class Queries {
   // Update an employee's role
   async function updateEmployeeRole(employee_id, role_id) {
     const [result] = await this.connection.query(
-      `UPDATE employee SET role_id = '' WHERE id = '';`,
+      `UPDATE employee SET role_id = ' ' WHERE id = ' ';`,
       [role_id, employee_id]
     );
     return result;
   }
 
-  
+    
+      // deletes a department
+      async function deleteDepartment(departmentId) {
+        const [rows] = await this.connection.query(
+          'DELETE FROM department WHERE id = " " ',
+          [departmentId]
+        );
+        console.log(`${rows.affectedRows} department deleted with id ${departmentId}.`);
+      }
 
 
 
