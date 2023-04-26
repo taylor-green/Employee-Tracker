@@ -29,11 +29,10 @@ class Queries {
   // View all employees
   async function viewAllEmployees() {
     const [rows] = await this.connection.query(
-      `SELECT employee.id AS 'Employee ID', employee.first_name AS 'First Name', employee.last_name AS 'Last Name', role.title AS 'Job Title', department.name AS 'Department', role.salary AS 'Salary', CONCAT(manager.first_name, ' ', manager.last_name) AS 'Manager'
+      `SELECT employee.id AS 'Employee ID', employee.first_name AS 'First Name', employee.last_name AS 'Last Name', role.title AS 'Job Title', department.name AS 'Department', role.salary AS 'Salary', CONCAT
         FROM employee 
         LEFT JOIN role ON employee.role_id = role.id
         LEFT JOIN department ON role.department_id = department.id
-        LEFT JOIN employee manager ON employee.manager_id = manager.id
         ORDER BY employee.id;`
     );
     return rows;
