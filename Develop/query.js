@@ -6,7 +6,7 @@ class Queries {
     this.connection = connection;
   }
 
-  // View all departments
+  // View all depts
   async viewAllDepartments() {
     const [rows] = await this.connection.query(
       `SELECT id AS 'Department ID', name AS 'Department Name' FROM department ORDER BY id;`
@@ -87,18 +87,38 @@ class Queries {
       }
 
 
+  // deletes a role
+  async function deleteRole(roleId) {
+    const [rows] = await this.connection.query(
+      'DELETE FROM role WHERE id = " "',
+      [roleId]
+    );
+    console.log(`${rows.affectedRows} role deleted with id ${roleId}.`);
+  }
 
-
-
-
-
-
-
-
-
-
-
+  // deletes an employee
+  async function deleteEmployee(employeeId) {
+    const [rows] = await this.connection.query(
+      'DELETE FROM employee WHERE id = " "',
+      [employeeId]
+    );
+    console.log(`${rows.affectedRows} employee deleted with id ${employeeId}.`);
+  }
 
 
 
 module.exports = Queries;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
