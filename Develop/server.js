@@ -113,23 +113,23 @@ async function addDepartment() {
     console.log(`Role ${title} has been added.`);
   }
 
-  // Prompt user to add an employee
+  // add an employee
 async function addEmployee() {
     const roles = await queries.viewAllRoles();
   
     const {first_name, last_name, role_id} = await inquirer.prompt([{
         type: 'input',
-        message: 'What is the employee's first name?',
+        message: "What is the employee's first name?",
         name: 'first_name',
       },
       {
         type: 'input',
-        message: 'What is the employee's last name?',
+        message: "What is the employee's last name?",
         name: 'last_name',
       },
       {
         type: 'list',
-        message: 'What is the employee's role?',
+        message: "What is the employee's role?",
         name: 'role_id',
         choices: roles.map((role) => ({
           name: role['Job Title'],
@@ -138,11 +138,11 @@ async function addEmployee() {
       },
       
     ]);
-    await queries.addEmployee(first_name, last_name, role_id, manager_id);
+    await queries.addEmployee(first_name, last_name, role_id);
     console.log(`Employee ${first_name} ${last_name} has been added.`);
   }
 
-  // Prompt user to update an employee's role
+  // update an employee's role
 async function updateEmployeeRole() {
     const employees = await queries.viewAllEmployees();
     const roles = await queries.viewAllRoles();
@@ -167,4 +167,38 @@ async function updateEmployeeRole() {
     ]);
     await queries.updateEmployeeRole(employee_id, role_id);
     console.log(`Employee's role has been updated.`);
+  }
+
+  // view employees by dept
+async function viewEmployeesByDepartment() {
+    const departments = await queries.viewAllDepartments();
+    const departmentId  = await inquirer.prompt([
+      {
+        type: 'list',
+        message: 'Which department would you like to view?',
+        name: "departmentId",
+        choices: departments.map((d) => ({
+          name: d['Department Name'],
+          value: d['Department ID'],
+        })),
+      },
+    ]);
+    console.table(await queries.viewEmployeesByDepartment(departmentId));
+  }
+  
+  // delete a dept
+  async function deleteDepartment() {
+    const departments = await queries.viewAllDepartments();
+    const departmentId  = await inquirer.prompt({
+      type: 'list',
+      message: 'Which department would you like to delete?',
+      name: 'departmentId',
+      choices: departments.map((department) => ({
+        name: department['Department Name'],
+        value: department['Department ID'],
+      })),
+    });
+  
+    await queries.deleteDepartment(departmentId);
+    console.log(`Department ${departmentId} has been deleted.`);
   }
