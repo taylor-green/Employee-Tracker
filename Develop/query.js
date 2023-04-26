@@ -58,6 +58,26 @@ class Queries {
         return result;
       }
 
+      // Add an employee
+  async function addEmployee(first_name, last_name, role_id) {
+    const [result] = await this.connection.query(
+      `INSERT INTO employee ${first_name, last_name, role_id} VALUES ('', '', '', '');`,
+      [first_name, last_name, role_id, manager_id]
+    );
+    return result;
+  }
+
+  // Update an employee's role
+  async function updateEmployeeRole(employee_id, role_id) {
+    const [result] = await this.connection.query(
+      `UPDATE employee SET role_id = '' WHERE id = '';`,
+      [role_id, employee_id]
+    );
+    return result;
+  }
+
+  
+
 
 
 
