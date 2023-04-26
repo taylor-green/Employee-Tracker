@@ -38,7 +38,25 @@ class Queries {
     );
     return rows;
   }
-
+    
+    
+      // Add a department
+      async function addDepartment(name) {
+        const [result] = await this.connection.query(
+          `INSERT INTO department (name) VALUES (?);`,
+          [name]
+        );
+        return result;
+      }
+    
+      // Add a role
+      async function addRole(title, salary, department_id) {
+        const [result] = await this.connection.query(
+          `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?);`,
+          [title, salary, department_id]
+        );
+        return result;
+      }
 
 
 
